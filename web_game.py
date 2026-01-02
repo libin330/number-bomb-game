@@ -5,45 +5,40 @@ import random
 # --- 界面美化：注入自定义 CSS ---
 st.markdown("""
     <style>
-    /* 1. 修改整体背景色和字体 */
+    /* 1. 背景变为明亮的浅灰色，文字变黑 */
     .stApp {
-        background: linear-gradient(135deg, #1e1e2f 0%, #2d3436 100%);
-        color: #ffffff;
+        background-color: #f8f9fa;
+        color: #333333;
     }
     
-    /* 2. 美化所有的按钮 */
-    div.stButton > button:first-child {
-        background: linear-gradient(to right, #ff416c, #ff4b2b);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 0.6rem 2rem;
-        font-weight: bold;
-        transition: 0.3s;
-        box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
-    }
-    
-    /* 按钮悬停效果 */
-    div.stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
+    /* 2. 标题颜色改为深蓝色 */
+    h1 {
+        color: #1e3a8a !important;
+        text-shadow: none;
+        -webkit-text-fill-color: #1e3a8a !important;
     }
 
-    /* 3. 美化卡片和输入框 */
+    /* 3. 输入框和容器改为纯白色背景，加淡淡的阴影 */
     .stNumberInput, .stRadio {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: #ffffff;
         padding: 20px;
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        color: #333333;
+    }
+
+    /* 4. 按钮改为天空蓝渐变 */
+    div.stButton > button:first-child {
+        background: linear-gradient(to right, #3b82f6, #2563eb);
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
     }
     
-    /* 4. 修改标题文字颜色 */
-    h1 {
-        background: -webkit-linear-gradient(#eee, #333);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    /* 5. 侧边栏颜色调整 */
+    [data-testid="stSidebar"] {
+        background-color: #ffffff;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -83,6 +78,7 @@ if not server_state.game_over:
                 elif guess == server_state.target:
                     server_state.game_over = True
                     server_state.logs.append(f"💥 {player_identity} 踩到了炸弹 ({guess})！游戏结束。")
+                    st.balloons() # 满屏飘起彩色气球
                 else:
                     # 更新范围
                     if guess > server_state.target:
@@ -111,3 +107,4 @@ if st.sidebar.button("强制重置游戏"):
         server_state.current_turn = "玩家1"
 
     st.rerun()
+
