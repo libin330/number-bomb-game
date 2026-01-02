@@ -55,6 +55,11 @@ with server_state_lock["game_state"]: # 加锁防止多人同时改数据导致�
 
 st.title("🌐 数字炸弹：异地实时联机版")
 
+# 新增这段逻辑：只要游戏结束了，任何人进来都能看到特效
+if server_state.game_over:
+    st.balloons()
+    st.snow()
+    
 # --- 2. 显示当前状态 ---
 st.write(f"### 当前安全范围：`{server_state.min_num}` — `{server_state.max_num}`")
 st.info(f"📢 当前轮到：**{server_state.current_turn}**")
@@ -78,7 +83,6 @@ if not server_state.game_over:
                 elif guess == server_state.target:
                     server_state.game_over = True
                     server_state.logs.append(f"💥 {player_identity} 踩到了炸弹 ({guess})！游戏结束。")
-                    st.balloons() # 满屏飘起彩色气球
                 else:
                     # 更新范围
                     if guess > server_state.target:
@@ -107,4 +111,5 @@ if st.sidebar.button("强制重置游戏"):
         server_state.current_turn = "玩家1"
 
     st.rerun()
+
 
