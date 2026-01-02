@@ -2,6 +2,52 @@ import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 import random
 
+# --- 界面美化：注入自定义 CSS ---
+st.markdown("""
+    <style>
+    /* 1. 修改整体背景色和字体 */
+    .stApp {
+        background: linear-gradient(135deg, #1e1e2f 0%, #2d3436 100%);
+        color: #ffffff;
+    }
+    
+    /* 2. 美化所有的按钮 */
+    div.stButton > button:first-child {
+        background: linear-gradient(to right, #ff416c, #ff4b2b);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.6rem 2rem;
+        font-weight: bold;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
+    }
+    
+    /* 按钮悬停效果 */
+    div.stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
+    }
+
+    /* 3. 美化卡片和输入框 */
+    .stNumberInput, .stRadio {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* 4. 修改标题文字颜色 */
+    h1 {
+        background: -webkit-linear-gradient(#eee, #333);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # --- 1. 初始化公共游戏状态 (所有人共享) ---
 with server_state_lock["game_state"]: # 加锁防止多人同时改数据导致冲突
     if "target" not in server_state:
@@ -63,4 +109,5 @@ if st.sidebar.button("强制重置游戏"):
         server_state.game_over = False
         server_state.logs = ["管理员重置了游戏，新一轮开始！"]
         server_state.current_turn = "玩家1"
+
     st.rerun()
